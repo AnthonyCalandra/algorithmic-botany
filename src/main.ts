@@ -21,6 +21,10 @@ app.innerHTML = `
           <input id="iterations-input" type="number" min="0" max="10" value="4" />
         </label>
         <label>
+          Angle (degrees, CCW)
+          <input id="angle-input" type="number" min="0" max="360" value="90" />
+        </label>
+        <label>
           L-system
           <input
             id="axiom-input"
@@ -94,6 +98,11 @@ if (!axiomInput) {
   throw new Error("Missing #axiom-input element.");
 }
 
+const angleInput = document.querySelector<HTMLInputElement>("#angle-input");
+if (!angleInput) {
+  throw new Error("Missing #angle-input element.");
+}
+
 const STORAGE_KEY = "algorithmic-botany-controls";
 
 type StoredRule = {
@@ -103,6 +112,7 @@ type StoredRule = {
 
 type StoredControls = {
   iterations: number;
+  angleDeg: number;
   axiom: string;
   rules: StoredRule[];
 };
@@ -148,6 +158,9 @@ const restoreControls = () => {
     if (Number.isFinite(parsed.iterations)) {
       iterationsInput.value = String(parsed.iterations);
     }
+    if (Number.isFinite(parsed.angleDeg)) {
+      angleInput.value = String(parsed.angleDeg);
+    }
     if (typeof parsed.axiom === "string") {
       axiomInput.value = parsed.axiom;
     }
@@ -179,6 +192,9 @@ renderButton?.addEventListener("click", () => {
   const iterations = iterationsInput
     ? Number.parseInt(iterationsInput.value, 10)
     : 0;
+  const angleDeg = angleInput
+    ? Number.parseFloat(angleInput.value)
+    : 90;
   const axiom = axiomInput?.value ?? "";
   const ruleRows = rulesList.querySelectorAll<HTMLDivElement>(".rule-row");
   const rules = new Map<string, string>();
@@ -205,11 +221,13 @@ renderButton?.addEventListener("click", () => {
   });
   const payload: StoredControls = {
     iterations,
+    angleDeg,
     axiom,
     rules: storedRules,
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   console.log("iterations:", iterations);
+  console.log("angleDeg:", angleDeg);
   console.log("axiom:", axiom);
   console.log("rules:");
   rules.forEach((value, key) => {
@@ -218,6 +236,6 @@ renderButton?.addEventListener("click", () => {
   instance.clear();
   drawLSystem(instance, axiom, rules, iterations, {
     step: 10,
-    angleDeg: 90,
+    angleDeg: Number.isFinite(angleDeg) ? angleDeg : 90,
   });
 });

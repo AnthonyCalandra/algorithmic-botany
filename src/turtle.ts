@@ -31,7 +31,7 @@ export const drawLSystem = (
   iterations: number,
   options: TurtleOptions,
 ) => {
-  const turtleCommands = new Set(["F", "f", "+", "-"]);
+  const turtleCommands = new Set(["F", "f", "+", "-", "[", "]"]);
   const { step, angleDeg, startX, startY, startAngleDeg } = options;
   const program = expandLSystem(axiom, rules, Math.max(0, iterations));
   const filteredProgram = Array.from(program).filter((command) =>
@@ -40,7 +40,7 @@ export const drawLSystem = (
 
   const originX = startX ?? 0;
   const originY = startY ?? 0;
-  const angleStep = p.radians(angleDeg);
+  const angleStep = -p.radians(angleDeg);
 
   const getBounds = () => {
     let x = originX;
@@ -51,6 +51,7 @@ export const drawLSystem = (
     let minY = y;
     let maxY = y;
 
+    const stack: Array<{ x: number; y: number; angle: number }> = [];
     for (const command of filteredProgram) {
       switch (command) {
         case "F":
@@ -69,6 +70,23 @@ export const drawLSystem = (
         }
         case "-": {
           angle -= angleStep;
+          break;
+        }
+        case "[": {
+          stack.push({ x, y, angle });
+          break;
+        }
+        case "]": {
+          const state = stack.pop();
+          if (state) {
+            x = state.x;
+            y = state.y;
+            angle = state.angle;
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+          }
           break;
         }
         default:
@@ -102,6 +120,7 @@ export const drawLSystem = (
   let x = originX;
   let y = originY;
   let angle = p.radians(startAngleDeg ?? -90);
+  const stack: Array<{ x: number; y: number; angle: number }> = [];
   for (const command of filteredProgram) {
     switch (command) {
       case "F": {
@@ -123,6 +142,19 @@ export const drawLSystem = (
       }
       case "-": {
         angle -= angleStep;
+        break;
+      }
+      case "[": {
+        stack.push({ x, y, angle });
+        break;
+      }
+      case "]": {
+        const state = stack.pop();
+        if (state) {
+          x = state.x;
+          y = state.y;
+          angle = state.angle;
+        }
         break;
       }
       default:
