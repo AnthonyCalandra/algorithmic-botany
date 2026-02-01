@@ -31,8 +31,12 @@ export const drawLSystem = (
   iterations: number,
   options: TurtleOptions,
 ) => {
+  const turtleCommands = new Set(["F", "f", "+", "-"]);
   const { step, angleDeg, startX, startY, startAngleDeg } = options;
   const program = expandLSystem(axiom, rules, Math.max(0, iterations));
+  const filteredProgram = Array.from(program).filter((command) =>
+    turtleCommands.has(command),
+  );
 
   const originX = startX ?? 0;
   const originY = startY ?? 0;
@@ -47,7 +51,7 @@ export const drawLSystem = (
     let minY = y;
     let maxY = y;
 
-    for (const command of program) {
+    for (const command of filteredProgram) {
       switch (command) {
         case "F":
         case "f": {
@@ -98,7 +102,7 @@ export const drawLSystem = (
   let x = originX;
   let y = originY;
   let angle = p.radians(startAngleDeg ?? -90);
-  for (const command of program) {
+  for (const command of filteredProgram) {
     switch (command) {
       case "F": {
         const nextX = x + step * Math.cos(angle);
