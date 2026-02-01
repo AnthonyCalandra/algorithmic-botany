@@ -1,0 +1,162 @@
+:root {
+  font-family: "Courier New", Courier, monospace;
+  color: #1c1c1c;
+  background: #f7f4ed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  padding: 24px;
+}
+
+.header h1 {
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.header p {
+  margin: 0;
+  color: #5a5a5a;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+  min-height: 0;
+}
+
+.panel {
+  border: 1px solid #d7d2c7;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fffaf1;
+  display: grid;
+  gap: 12px;
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.panel label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.panel input {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #d0c9bb;
+  background: #fff;
+}
+
+.panel button {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #2e2e2e;
+  background: #202020;
+  color: #fff;
+  cursor: pointer;
+}
+
+.panel button.secondary-button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #8f887b;
+  background: #f2ede2;
+  color: #2e2e2e;
+  font-size: 12px;
+}
+
+.panel .note {
+  margin: 0;
+  font-size: 12px;
+  color: #7a7469;
+}
+
+.rules {
+  display: grid;
+  gap: 8px;
+}
+
+.rules-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.rules-header h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.rules-list {
+  display: grid;
+  gap: 6px;
+}
+
+.rule-row {
+  display: grid;
+  grid-template-columns: 42px 28px 1fr 26px;
+  align-items: center;
+  gap: 6px;
+}
+
+.rule-row input {
+  width: 100%;
+}
+
+.rule-symbol {
+  text-transform: none;
+  text-align: center;
+}
+
+.rule-arrow {
+  text-align: center;
+  color: #6a645a;
+  font-size: 12px;
+}
+
+.rule-remove {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #c8c1b4;
+  background: #f8f3e9;
+  color: #5a544a;
+  font-size: 12px;
+}
+
+.stage {
+  border: 1px solid #d7d2c7;
+  border-radius: 16px;
+  background: #fffaf1;
+  padding: 16px;
+  display: grid;
+}
+
+.canvas-root {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}
