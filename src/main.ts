@@ -18,7 +18,7 @@ app.innerHTML = `
         <h2>Controls</h2>
         <label>
           Iterations
-          <input id="iterations-input" type="number" min="0" max="10" value="4" />
+          <input id="iterations-input" type="number" min="0" max="10" value="2" />
         </label>
         <label>
           Angle (degrees, CCW)
@@ -29,7 +29,7 @@ app.innerHTML = `
           <input
             id="axiom-input"
             type="text"
-            value="F+F+F"
+            value="F+F+F+F"
             placeholder="Enter L-system string"
           />
         </label>
@@ -82,7 +82,8 @@ if (!rulesList) {
   throw new Error("Missing #rules-list element.");
 }
 
-const addRuleButton = document.querySelector<HTMLButtonElement>("#add-rule-btn");
+const addRuleButton =
+  document.querySelector<HTMLButtonElement>("#add-rule-btn");
 if (!addRuleButton) {
   throw new Error("Missing #add-rule-btn element.");
 }
@@ -179,8 +180,10 @@ const restoreControls = () => {
 };
 
 if (!restoreControls()) {
-  rulesList.appendChild(createRuleRow("F", "Ff"));
-  rulesList.appendChild(createRuleRow("f", "ff"));
+  rulesList.appendChild(
+    createRuleRow("F", "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF"),
+  );
+  rulesList.appendChild(createRuleRow("f", "ffffff"));
 }
 
 addRuleButton.addEventListener("click", () => {
@@ -192,9 +195,7 @@ renderButton?.addEventListener("click", () => {
   const iterations = iterationsInput
     ? Number.parseInt(iterationsInput.value, 10)
     : 0;
-  const angleDeg = angleInput
-    ? Number.parseFloat(angleInput.value)
-    : 90;
+  const angleDeg = angleInput ? Number.parseFloat(angleInput.value) : 90;
   const axiom = axiomInput?.value ?? "";
   const ruleRows = rulesList.querySelectorAll<HTMLDivElement>(".rule-row");
   const rules = new Map<string, string>();
